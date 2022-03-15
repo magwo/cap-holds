@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="holds.js"></script>
+    <script src="main.js"></script>
+    <style>
+        html {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        body {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            padding-top: 12px;
+            margin: 0;
+            font-family: sans-serif;
+            font-size: 18px;
+            line-height: 1.1;
+            justify-content: center;
+            color: #666;
+        }
+
+        body #viewport {
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 560px;
+            height: 900px;
+            overflow: hidden;
+        }
+
+        .aircraft-selection-list {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+        .aircraft-selector {
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            opacity: 0.5;
+            transition: opacity 400ms ease-in-out;
+        }
+        .aircraft-selector:hover, .aircraft-selector:active, .aircraft-selector[toggled] {
+            opacity: 1.0;
+        }
+
+        .hold-selection-list {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+        .hold-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-radius: 8px;
+            margin-right: 8px;
+            padding: 4px;
+            width: 64px;
+            height: 64px;
+            background-color: #dfdfdf;
+            font-size: 12px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        .hold-selector[toggled] {
+            background-color: #efefef;
+            color: #222;
+        }
+
+        .aircraft {
+            position: absolute;
+            z-index: 1;
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            /* transition: all 1200ms cubic-bezier(0.45, 0, 0.55, 1), background-image 400ms; */
+            transform: translateZ(0);
+            background-image: url('images/viper@2x.png');
+        }
+        .aircraft .number {
+            position: absolute;
+            bottom: 26px;
+            right: -10px;
+            font-size: 15px;
+            transform: rotate(-45deg);
+            transition: opacity 200ms;
+            opacity: 0.3;
+        }
+        .aircraft:hover .number, .aircraft:hover .number {
+            opacity: 1;
+        }
+
+        .faded {
+            opacity: 0;
+            z-index: 0;
+        }
+
+        [hidden] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="aircraft-selection-list">
+        <div class="aircraft-selector" style="background-image: url(images/viper@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+        <div class="aircraft-selector" style="background-image: url(images/flanker@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+        <div class="aircraft-selector" style="background-image: url(images/tomcat@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+        <div class="aircraft-selector" style="background-image: url(images/hornet@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+        <div class="aircraft-selector" style="background-image: url(images/viggen@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+        <div class="aircraft-selector" style="background-image: url(images/gripen@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+        <div class="aircraft-selector" style="background-image: url(images/fishbed@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+    </div>
+    <div class="hold-selection-list">
+        <div class="hold-selector" onclick="toggleAndSetHold(this, twoShipOrbitGrinder)">
+            Orbit grinder
+        </div>
+        <div class="hold-selector" onclick="toggleAndSetHold(this, twoShipOrbitGrinderCounter)">
+            Orbit grinder counter-rotating
+        </div>
+        <div class="hold-selector" onclick="toggleAndSetHold(this, twoShipRacetrackGrinder)">
+            Racetrack grinder
+        </div>
+        <div class="hold-selector" onclick="toggleAndSetHold(this, twoShipRacetrackGrinderCounter)">
+            Racetrack grinder counter-rotating
+        </div>
+    </div>
+    <div class="hold-selection-list">
+        <div class="hold-selector" onclick="toggleAndSetHold(this, fourShipOrbitGrinder)">
+            Orbit grinder 4-ship
+        </div>
+        <div class="hold-selector" onclick="toggleAndSetHold(this, fourShipRacetrackGrinder)">
+            Racetrack grinder 4-ship
+        </div>
+    </div>
+
+    <div id="viewport">
+    </div>
+
+    <template id="aircraft-template">
+        <div class="aircraft">
+            <div class="number"></div>
+        </div>
+    </template>
+
+    <script>
+        let init = () => {
+            const viewport = document.getElementById("viewport")
+            const aircraftTemplate = document.getElementById("aircraft-template");
+            initHolds(viewport, aircraftTemplate);
+            document.querySelector(".aircraft-selector").click();
+            document.querySelector(".hold-selector").click();
+            startAnimationLoop();
+        }
+        init();
+
+        function toggleAndSetAircraft(element, aircraftUrl) {
+            setToggled(element, ".aircraft-selector");
+            setAllAircraftImage(aircraftUrl);
+        }
+
+        function toggleAndSetHold(element, hold) {
+            setToggled(element, ".hold-selector");
+            setHold(hold);
+        }
+
+        function setToggled(element, selector) {
+            const all = document.querySelectorAll(selector)
+            Array.from(all).forEach((other) => {
+                other.removeAttribute("toggled");
+            });
+            element.setAttribute("toggled", true);
+        }
+    </script>
+</body>
