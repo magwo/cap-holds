@@ -1,10 +1,19 @@
 const aircraftElements = [];
 let currentHold, speedFactor;
 
-function setAircraftPosition(aircraftIndex, x, y, rot) {
+function setAircraftPosition(aircraftIndex, x, y, rot, elapsedTime) {
     const aircraft = aircraftElements[aircraftIndex];
     aircraft.style.transform = `translate(${x-16}px, ${y-16}px) rotate(${rot+Math.PI/4}rad)`;
     aircraft.getElementsByClassName('number')[0].style.transform = `translate(${0}px, ${0}px) rotate(${-(rot+Math.PI/4)}rad)`;
+
+    const gimbal = 30; // ??? :S
+    let phase = ((elapsedTime + aircraft.phaseOffset) * 100) % (gimbal * 4);
+    if (phase > gimbal * 2) {
+       phase = gimbal * 2 - (phase - gimbal * 2); 
+    }
+    const beamRotation = -gimbal + phase;
+    // console.log("beam", beamRotation);
+    aircraft.getElementsByClassName('beam-container')[0].setAttribute('transform', `translate(${50}, ${0}) rotate(${beamRotation})`);
 }
 
 function setAircraftImage(aircraftIndex, url) {
@@ -41,8 +50,7 @@ function updateHold(timePassed) {
 
         if (i<positions.length) {
             let pos = positions[i];
-            // console.log(pos);
-            setAircraftPosition(i, 560/2 + pos.x * 100, 182 + pos.y * 100, pos.rotation);
+            setAircraftPosition(i, 560/2 + pos.x * 100, 182 + pos.y * 100, pos.rotation, timePassed);
         }
     }
 }
@@ -52,6 +60,7 @@ function initHolds(viewport, aircraftTemplate) {
         let aircraftElement = aircraftTemplate.content.cloneNode(true);
         aircraftElement = viewport.appendChild(aircraftElement.querySelector("div"));
         aircraftElement.querySelector(".number").innerHTML = 1 + i;
+        aircraftElement.phaseOffset = 100000 * Math.random();
         aircraftElements.push(aircraftElement);
     }
 }
@@ -65,7 +74,7 @@ function startAnimationLoop() {
             start = timestamp;
         }
         const elapsed = timestamp - start;
-        updateHold(speedFactor * elapsed / 2000);
+        updateHold(speedFactor * elapsed / 3000);
         requestAnimationFrame(step);    
     }
     requestAnimationFrame(step);
