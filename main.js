@@ -3,7 +3,7 @@ let currentHold, speedFactor;
 
 function setAircraftPosition(aircraftIndex, x, y, rot) {
     const aircraft = aircraftElements[aircraftIndex];
-    aircraft.style.transform = `translate(${x-24}px, ${y-24}px) rotate(${rot+Math.PI/4}rad)`;
+    aircraft.style.transform = `translate(${x-16}px, ${y-16}px) rotate(${rot+Math.PI/4}rad)`;
     aircraft.getElementsByClassName('number')[0].style.transform = `translate(${0}px, ${0}px) rotate(${-(rot+Math.PI/4)}rad)`;
 }
 
@@ -42,7 +42,7 @@ function updateHold(timePassed) {
         if (i<positions.length) {
             let pos = positions[i];
             // console.log(pos);
-            setAircraftPosition(i, 560/2 - 12 + pos.x * 100, 182 + pos.y * 100, pos.rotation);
+            setAircraftPosition(i, 560/2 + pos.x * 100, 182 + pos.y * 100, pos.rotation);
         }
     }
 }
