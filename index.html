@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="holds.js"></script>
+    <base href=".">
+    <script type="module" src="curve-interpolator.js"></script>
+    <script type="module" src="holds.js"></script>
     <script src="main.js"></script>
     <style>
         html {
@@ -158,28 +160,31 @@
         <div class="aircraft-selector" style="background-image: url(images/fishbed@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
     </div>
     <div class="hold-selection-list">
-        <div class="hold-selector" onclick="toggleAndSetHold(this, twoShipOrbitGrinder, 1.3)">
+        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.twoShipOrbitGrinder, 1.3)">
             Orbit grinder
         </div>
-        <div class="hold-selector" onclick="toggleAndSetHold(this, twoShipOrbitGrinderCounter, 1.3)">
+        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.twoShipOrbitGrinderCounter, 1.3)">
             Orbit grinder counter-rotating
         </div>
-        <div class="hold-selector" onclick="toggleAndSetHold(this, twoShipRacetrackGrinder, 1.0)">
+        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.twoShipRacetrackGrinder, 1.0)">
             Racetrack grinder
         </div>
-        <div class="hold-selector" onclick="toggleAndSetHold(this, twoShipRacetrackGrinderCounter, 1.0)">
+        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.twoShipRacetrackGrinderCounter, 1.0)">
             Racetrack grinder counter-rotating
         </div>
     </div>
     <div class="hold-selection-list">
-        <div class="hold-selector" onclick="toggleAndSetHold(this, fourShipOrbitGrinder, 1.3)">
+        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.fourShipOrbitGrinder, 1.3)">
             Orbit grinder 4-ship
         </div>
-        <div class="hold-selector" onclick="toggleAndSetHold(this, fourShipRacetrackGrinderCross, 1.0)">
+        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.fourShipRacetrackGrinderCross, 1.0)">
             Racetrack grinder 4-ship, cross
         </div>
-        <div class="hold-selector" onclick="toggleAndSetHold(this, fourShipRacetrackGrinderHook, 1.0)">
+        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.fourShipRacetrackGrinderHook, 1.0)">
             Racetrack grinder 4-ship, hook
+        </div>
+        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.crankGrinder, 1.0)">
+            Kongo Crank Grinder 2000
         </div>
     </div>
 
@@ -206,7 +211,12 @@
         </div>
     </template>
 
-    <script>
+    <script type="module">
+        import { twoShipOrbitGrinder, twoShipOrbitGrinderCounter, twoShipRacetrackGrinder, twoShipRacetrackGrinderCounter, fourShipOrbitGrinder, fourShipRacetrackGrinderCross, fourShipRacetrackGrinderHook, crankGrinder } from './holds.js'
+        window.toggleAndSetHold = toggleAndSetHold;
+        window.toggleAndSetAircraft = toggleAndSetAircraft;
+        window.holds = { twoShipOrbitGrinder, twoShipOrbitGrinderCounter, twoShipRacetrackGrinder, twoShipRacetrackGrinderCounter, fourShipOrbitGrinder, fourShipRacetrackGrinderCross, fourShipRacetrackGrinderHook, crankGrinder };
+
         let init = () => {
             const viewport = document.getElementById("viewport")
             const aircraftTemplate = document.getElementById("aircraft-template");
@@ -217,7 +227,7 @@
         }
         init();
 
-        function toggleAndSetAircraft(element, aircraftUrl) {
+        export function toggleAndSetAircraft(element, aircraftUrl) {
             setToggled(element, ".aircraft-selector");
             setAllAircraftImage(aircraftUrl);
         }
