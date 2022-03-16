@@ -54,6 +54,10 @@ function getInvertedOrbit(timePassed) {
     return pos;
 }
 
+function getOffset(pos, dx, dy) {
+    return { x: pos.x + dx, y: pos.y + dy, rotation: pos.rotation };
+}
+
 function twoShipOrbitGrinder(timePassed) {
     return [
         getOrbit(timePassed),
@@ -78,7 +82,7 @@ function twoShipRacetrackGrinder(timePassed) {
 function twoShipRacetrackGrinderCounter(timePassed) {
     return [
         getRacetrack(timePassed, 2),
-        getInvertedRacetrack(timePassed - QUARTER_CIRCLE, 2),
+        getInvertedRacetrack(timePassed - QUARTER_CIRCLE + QUARTER_CIRCLE / 4, 2),
     ]
 }
 
@@ -91,108 +95,20 @@ function fourShipOrbitGrinder(timePassed) {
     ]
 }
 
-
-
-function fourShipRacetrackGrinder(timePassed) {
+function fourShipRacetrackGrinderCross(timePassed) {
     return [
         getRacetrack(timePassed, 2),
-        getInvertedRacetrack(timePassed - QUARTER_CIRCLE, 2),
-        
+        getInvertedRacetrack(timePassed + HALF_CIRCLE - QUARTER_CIRCLE + QUARTER_CIRCLE / 4, 2),
+        getRacetrack(timePassed + HALF_CIRCLE, 2),
+        getInvertedRacetrack(timePassed - QUARTER_CIRCLE + QUARTER_CIRCLE / 4, 2),
     ]
 }
 
-
-
-
-
-const FINGER_FOUR_LEFT = {
-    name: "Finger four left",
-    positions: [
-        [0, 0],
-        [1, 1],
-        [-1, 1],
-        [-2, 2],
-    ]
-}
-
-const FINGER_FOUR_RIGHT = {
-    name: "Finger four right",
-    positions: [
-        [0, 0],
-        [-1, 1],
-        [1, 1],
-        [2, 2],
-    ]
-}
-
-const TWO_SHIP_ECHELON_LEFT = {
-    name: "Two-ship echelon left",
-    positions: [
-        [0, 0],
-        [-1, 1],
-    ]
-}
-
-const TWO_SHIP_ECHELON_RIGHT = {
-    name: "Two-ship echelon right",
-    positions: [
-        [0, 0],
-        [1, 1],
-    ]
-}
-
-const FOUR_SHIP_ECHELON_RIGHT = {
-    name: "Four-ship echelon right",
-    positions: [
-        [0, 0],
-        [1, 1],
-        [2, 2],
-        [3, 3],
-    ]
-}
-
-const FOUR_SHIP_ECHELON_LEFT = {
-    name: "Four-ship echelon left",
-    positions: [
-        [0, 0],
-        [-1, 1],
-        [-2, 2],
-        [-3, 3],
-    ]
-}
-
-const WEDGE = {
-    name: "Wedge",
-    positions: [
-        [0, 0],
-        [1, 1],
-        [-1, 1],
-    ]
-}
-
-const TRAIL = {
-    name: "Trail",
-    positions: [
-        [0, 0],
-        [0, 2],
-        [0, 4],
-        [0, 6],
-    ]
-}
-
-const LINE_ABREAST = {
-    name: "Line abreast",
-    positions: [
-        [0, 0],
-        [1.5, 0],
-        [-1.5, 0],
-    ]
-}
-
-const COMBAT_SPREAD = {
-    name: "Combat spread",
-    positions: [
-        [-2, 0],
-        [2, 0],
+function fourShipRacetrackGrinderHook(timePassed) {
+    return [
+        getOffset(getRacetrack(timePassed, 2), 0, 0),
+        getOffset(getRacetrack(timePassed, 2), 0.6, 0),
+        getOffset(getRacetrack(timePassed + HALF_CIRCLE, 2), -0.6, 0),
+        getOffset(getRacetrack(timePassed + HALF_CIRCLE, 2), 0, 0),
     ]
 }

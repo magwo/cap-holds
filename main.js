@@ -1,5 +1,5 @@
 const aircraftElements = [];
-let currentHold;
+let currentHold, speedFactor;
 
 function setAircraftPosition(aircraftIndex, x, y, rot) {
     const aircraft = aircraftElements[aircraftIndex];
@@ -18,8 +18,9 @@ function setAllAircraftImage(url) {
     }
 }
 
-function setHold(hold) {
+function setHold(hold, _speedFactor) {
     currentHold = hold;
+    speedFactor = _speedFactor
     const start = hold(0);
 
     for(let i=0; i<aircraftElements.length; i++) {
@@ -41,7 +42,7 @@ function updateHold(timePassed) {
         if (i<positions.length) {
             let pos = positions[i];
             // console.log(pos);
-            setAircraftPosition(i, 560/2 - 12 + pos.x * 120, 182 + pos.y * 120, pos.rotation);
+            setAircraftPosition(i, 560/2 - 12 + pos.x * 100, 182 + pos.y * 100, pos.rotation);
         }
     }
 }
@@ -64,7 +65,7 @@ function startAnimationLoop() {
             start = timestamp;
         }
         const elapsed = timestamp - start;
-        updateHold(elapsed / 2000);
+        updateHold(speedFactor * elapsed / 2000);
         requestAnimationFrame(step);    
     }
     requestAnimationFrame(step);
