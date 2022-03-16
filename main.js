@@ -6,14 +6,14 @@ function setAircraftPosition(aircraftIndex, x, y, rot, elapsedTime) {
     aircraft.style.transform = `translate(${x-16}px, ${y-16}px) rotate(${rot+Math.PI/4}rad)`;
     aircraft.getElementsByClassName('number')[0].style.transform = `translate(${0}px, ${0}px) rotate(${-(rot+Math.PI/4)}rad)`;
 
-    const gimbal = 30; // ??? :S
-    let phase = ((elapsedTime + aircraft.phaseOffset) * 100) % (gimbal * 4);
+    const gimbal = 60;
+    let phase = ((elapsedTime + aircraft.phaseOffset) * 200) % (gimbal * 4);
     if (phase > gimbal * 2) {
        phase = gimbal * 2 - (phase - gimbal * 2); 
     }
     const beamRotation = -gimbal + phase;
     // console.log("beam", beamRotation);
-    aircraft.getElementsByClassName('beam-container')[0].setAttribute('transform', `translate(${50}, ${0}) rotate(${beamRotation})`);
+    aircraft.getElementsByClassName('beam-container')[0].setAttribute('transform', `translate(${300}, ${0}) rotate(${beamRotation})`);
 }
 
 function setAircraftImage(aircraftIndex, url) {
@@ -75,7 +75,7 @@ function startAnimationLoop() {
         }
         const elapsed = timestamp - start;
         updateHold(speedFactor * elapsed / 3000);
-        requestAnimationFrame(step);    
+        requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
 }
