@@ -106,9 +106,9 @@ function fourShipRacetrackGrinderCross(timePassed) {
 
 function fourShipRacetrackGrinderHook(timePassed) {
     return [
-        getOffset(getRacetrack(timePassed, 2), 0, 0),
-        getOffset(getRacetrack(timePassed, 2), 0.6, 0),
-        getOffset(getRacetrack(timePassed + HALF_CIRCLE, 2), -0.6, 0),
-        getOffset(getRacetrack(timePassed + HALF_CIRCLE, 2), 0, 0),
+        getOffset(getRacetrack(timePassed, 2), -0.3, 0),
+        getOffset(getRacetrack(timePassed, 2), 0.3, 0),
+        getOffset(getRacetrack(timePassed + HALF_CIRCLE, 2), -0.3, 0),
+        getOffset(getRacetrack(timePassed + HALF_CIRCLE, 2), 0.3, 0),
     ]
 }
