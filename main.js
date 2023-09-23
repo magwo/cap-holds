@@ -21,9 +21,9 @@ function setAircraftImage(aircraftIndex, url) {
     aircraft.style["background-image"] = url;
 }
 
-function setAllAircraftImage(url) {
+function setAllAircraftImage(path) {
     for(let i=0; i<aircraftElements.length; i++) {
-        setAircraftImage(i, url);
+        setAircraftImage(i, path);
     }
 }
 

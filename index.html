@@ -148,39 +148,39 @@
 <body>
 
     <div class="aircraft-selection-list">
-        <div class="aircraft-selector" style="background-image: url(images/viper@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
-        <div class="aircraft-selector" style="background-image: url(images/flanker@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
-        <div class="aircraft-selector" style="background-image: url(images/tomcat@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
-        <div class="aircraft-selector" style="background-image: url(images/hornet@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
-        <div class="aircraft-selector" style="background-image: url(images/viggen@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
-        <div class="aircraft-selector" style="background-image: url(images/gripen@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
-        <div class="aircraft-selector" style="background-image: url(images/fishbed@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+        <div class="aircraft-selector" data-name="viper" style="background-image: url(images/viper@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+        <div class="aircraft-selector" data-name="flanker" style="background-image: url(images/flanker@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+        <div class="aircraft-selector" data-name="tomcat" style="background-image: url(images/tomcat@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+        <div class="aircraft-selector" data-name="hornet" style="background-image: url(images/hornet@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+        <div class="aircraft-selector" data-name="viggen" style="background-image: url(images/viggen@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+        <div class="aircraft-selector" data-name="gripen" style="background-image: url(images/gripen@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
+        <div class="aircraft-selector" data-name="fishbed" style="background-image: url(images/fishbed@2x.png)" onclick="toggleAndSetAircraft(this, this.style['background-image'])"></div>
     </div>
     <div class="hold-selection-list">
-        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.twoShipOrbitGrinder, 1.3)">
+        <div class="hold-selector" data-name="twoShipOrbitGrinder" onclick="toggleAndSetHold(this, holds.twoShipOrbitGrinder, 1.3)">
             Orbit grinder
         </div>
-        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.twoShipOrbitGrinderCounter, 1.3)">
+        <div class="hold-selector" data-name="twoShipOrbitGrinderCounter" onclick="toggleAndSetHold(this, holds.twoShipOrbitGrinderCounter, 1.3)">
             Orbit grinder counter-rotating
         </div>
-        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.twoShipRacetrackGrinder, 1.0)">
+        <div class="hold-selector" data-name="twoShipRacetrackGrinder" onclick="toggleAndSetHold(this, holds.twoShipRacetrackGrinder, 1.0)">
             Racetrack grinder
         </div>
-        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.twoShipRacetrackGrinderCounter, 1.0)">
+        <div class="hold-selector" data-name="twoShipRacetrackGrinderCounter" onclick="toggleAndSetHold(this, holds.twoShipRacetrackGrinderCounter, 1.0)">
             Racetrack grinder counter-rotating
         </div>
     </div>
     <div class="hold-selection-list">
-        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.fourShipOrbitGrinder, 1.3)">
+        <div class="hold-selector" data-name="fourShipOrbitGrinder" onclick="toggleAndSetHold(this, holds.fourShipOrbitGrinder, 1.3)">
             Orbit grinder 4-ship
         </div>
-        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.fourShipRacetrackGrinderCross, 1.0)">
+        <div class="hold-selector" data-name="fourShipRacetrackGrinderCross" onclick="toggleAndSetHold(this, holds.fourShipRacetrackGrinderCross, 1.0)">
             Racetrack grinder 4-ship, cross
         </div>
-        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.fourShipRacetrackGrinderHook, 1.0)">
+        <div class="hold-selector" data-name="fourShipRacetrackGrinderHook" onclick="toggleAndSetHold(this, holds.fourShipRacetrackGrinderHook, 1.0)">
             Racetrack grinder 4-ship, hook
         </div>
-        <div class="hold-selector" onclick="toggleAndSetHold(this, holds.crankGrinder, 1.0)">
+        <div class="hold-selector" data-name="crankGrinder" onclick="toggleAndSetHold(this, holds.crankGrinder, 1.0)">
             Kongo Crank Grinder 2000
         </div>
     </div>
@@ -224,8 +224,30 @@
             const viewport = document.getElementById("viewport")
             const aircraftTemplate = document.getElementById("aircraft-template");
             initHolds(viewport, aircraftTemplate);
-            document.querySelector(".aircraft-selector").click();
-            document.querySelector(".hold-selector").click();
+
+            const qHold = new URLSearchParams(window.location.search).get("h");
+            if(qHold) {
+                const holdSelectors = document.querySelectorAll(".hold-selector");
+                Array.from(holdSelectors).forEach((holdSelector) => {
+                    if(holdSelector.getAttribute("data-name") === qHold) {
+                        holdSelector.click();
+                    }
+                });
+            } else {
+                document.querySelectorAll(".hold-selector")[0].click();
+            }
+
+            const qAircraft = new URLSearchParams(window.location.search).get("a");
+            if(qAircraft) {
+                const aircraftSelectors = document.querySelectorAll(".aircraft-selector");
+                Array.from(aircraftSelectors).forEach((aircraftSelector) => {
+                    if(aircraftSelector.getAttribute("data-name") === qAircraft) {
+                        aircraftSelector.click();
+                    }
+                });
+            } else {
+                document.querySelectorAll(".aircraft-selector")[0].click();
+            }
             startAnimationLoop();
         }
         init();
@@ -233,11 +255,23 @@
         export function toggleAndSetAircraft(element, aircraftUrl) {
             setToggled(element, ".aircraft-selector");
             setAllAircraftImage(aircraftUrl);
+
+            const url = new URL(window.location.toString());
+            const urlParams = new URLSearchParams(url.search);
+            urlParams.set('a', element.getAttribute("data-name"));
+            url.search = urlParams.toString();
+            window.history.pushState({path:url.path},'',url.toString());
         }
 
         function toggleAndSetHold(element, hold, speedFactor) {
             setToggled(element, ".hold-selector");
             setHold(hold, speedFactor);
+
+            const url = new URL(window.location.toString());
+            const urlParams = new URLSearchParams(url.search);
+            urlParams.set('h', element.getAttribute("data-name"));
+            url.search = urlParams.toString();
+            window.history.pushState({path:url.path},'',url.toString());
         }
 
         function setToggled(element, selector) {
