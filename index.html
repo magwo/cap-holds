@@ -35,7 +35,6 @@
 
         .aircraft-selection-list {
             display: flex;
-            z-index: 100;
             justify-content: center;
             margin-bottom: 12px;
         }
@@ -45,6 +44,7 @@
             background-size: cover;
             opacity: 0.5;
             transition: opacity 400ms ease-in-out;
+            z-index: 100;
         }
         .aircraft-selector:hover, .aircraft-selector:active, .aircraft-selector[toggled] {
             opacity: 1.0;
